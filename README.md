@@ -17,5 +17,17 @@ Vercel를 이용해 배포하며, React 기반으로 제작되었습니다.
 
 - **Framework:** React
 - **Language:** JavaScript, TypeScript
-- **Styling:** SCSS
+- **Styling:** Bootstrap
 - **Deployment:** Vercel
+
+---
+
+## 설치 방법
+
+```bash
+pnpm install
+```
+
+```bash
+pnpm dev
+```
