@@ -1,5 +1,14 @@
-import React from 'react';
+import { Message } from '../types/message';
 
-export const MessageItem = () => {
-  return <div>MessageItem</div>;
+interface MessageItemProps {
+  message: Message;
+}
+
+export const MessageItem = ({ message }: MessageItemProps) => {
+  return (
+    <div>
+      <div>{message.content}</div>
+      <div>{message.timestamp.toLocaleTimeString()}</div>
+    </div>
+  );
 };

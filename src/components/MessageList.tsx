@@ -1,9 +1,16 @@
 import { MessageItem } from './MessageItem';
+import { Message } from '../types/message';
 
-export const MessageList = () => {
+interface MessageListProps {
+  messages: Message[];
+}
+
+export const MessageList = ({ messages }: MessageListProps) => {
   return (
     <div>
-      <MessageItem />
+      {messages.map((message) => (
+        <MessageItem key={message.id} message={message} />
+      ))}
     </div>
   );
 };

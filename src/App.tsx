@@ -1,14 +1,14 @@
 import './App.scss';
-import { ChatRoom } from './components/ChatRoom';
+import { ParticipantRoom } from './pages/ParticipantRoom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ChatBox from './components/ChatBox';
+const router = createBrowserRouter([
+  { path: '/', Component: ParticipantRoom },
+  { path: '/chat', Component: ChatBox },
+]);
 
 const App = () => {
-  return (
-    <>
-      <div>
-        <ChatRoom />
-      </div>
-    </>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
