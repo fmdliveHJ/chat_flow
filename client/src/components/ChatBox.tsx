@@ -21,11 +21,13 @@ const ChatBox = () => {
   }, []);
 
   const handleSendMessage = (content: string) => {
+    const currentParticipant = participants[0];
     const newMessage: Message = {
       id: Date.now().toString(),
       content,
       timestamp: new Date(),
-      senderId: String(participants[0]?.id) || 'unknown',
+      senderId: String(currentParticipant?.id) || 'unknown',
+      senderName: currentParticipant?.name || '알 수 없음',
     };
     setMessages((prev) => [...prev, newMessage]);
   };

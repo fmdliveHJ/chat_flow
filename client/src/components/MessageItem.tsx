@@ -7,6 +7,7 @@ interface MessageItemProps {
 export const MessageItem = ({ message }: MessageItemProps) => {
   return (
     <div>
+      <div>{message.senderName}</div>
       <div>{message.content}</div>
       <div>{message.timestamp.toLocaleTimeString()}</div>
     </div>
