@@ -66,8 +66,8 @@ export const JoinRoom = () => {
         id: '',
         sender: 'user',
         type: 'message',
-        userId: user?.userId,
-        username: user?.username,
+        userId: userId,
+        username: username,
         message: message,
       };
       setMessages((prev) => [...prev, newMessage]);
