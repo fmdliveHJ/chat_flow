@@ -21,7 +21,7 @@ const ChatInput = ({ message, sendMessage, setMessage }: ChatInputProps) => {
           placeholder='message'
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(e) => e.code === 'Enter' && handleSendMessage()}
+          onKeyUp={(e) => e.code === 'Enter' && handleSendMessage()}
         />
         <button
           className='btn btn-outline-secondary'

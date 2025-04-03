@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import NewUser from '../components/NewUser';
 import ChatRoom from '../components/ChatRoom';
 import { io } from 'socket.io-client';
+import { Message } from '../types/message';
 
 const socket = io('http://localhost:4000', {
   autoConnect: false,
@@ -17,47 +18,47 @@ interface SessionData {
   username: string;
 }
 
-interface Message {
-  id: string;
-  sender: string;
-  type?: 'UserStatus' | 'message';
-  userId?: string;
-  username?: string;
-  message?: string;
-}
-
 export const JoinRoom = () => {
   const [username, setUsername] = useState('');
   const [user, setUser] = useState<User | null>(null);
-  const [users, setUsers] = useState<User[]>([]);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
 
-  function handleChange(currentEvent: React.ChangeEvent<HTMLInputElement>) {
-    setUsername(currentEvent.target.value);
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setUsername(e.target.value);
   }
   useEffect(() => {
     socket.on('users', (users: User[]) => {
       const messageArr: Message[] = [];
-      users.forEach((u) => {
+      users.forEach((user) => {
         const newMessage: Message = {
-          id: u.userId,
+          id: user.userId,
           sender: 'system',
           type: 'UserStatus',
-          userId: u.userId,
-          username: u.username,
+          userId: user.userId,
+          username: user.username,
         };
         messageArr.push(newMessage);
       });
 
       setMessages((prev) => [...prev, ...messageArr]);
-      setUsers(users);
       console.log(messageArr);
     });
 
     socket.on('session', (data: SessionData) => {
       const { username, userId } = data;
       setUser({ username, userId });
+    });
+
+    socket.on('user connected', ({ userId, username }) => {
+      const newMessage: Message = {
+        id: '',
+        sender: 'user',
+        type: 'message',
+        userId: userId,
+        username: username,
+      };
+      setMessages((prev) => [...prev, newMessage]);
     });
 
     socket.on('new message', ({ userId, username, message }) => {
