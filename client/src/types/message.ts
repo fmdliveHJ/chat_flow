@@ -1,7 +1,8 @@
 export interface Message {
   id: string;
-  content: string;
-  timestamp: Date;
-  senderId: string;
-  senderName: string;
+  sender: string;
+  type?: 'UserStatus' | 'message';
+  userId?: string;
+  username?: string;
+  message?: string;
 }

@@ -1,0 +1,30 @@
+.chat-message-right {
+  margin-right: auto;
+  flex-direction: row-reverse;
+}
+
+.chat-message-left {
+  margin-left: auto;
+}
+
+.chat-message-left,
+.chat-message-right {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.chat-input {
+  position: sticky;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.chat-window {
+  z-index: 1000;
+  height: 100%;
+  overflow: hidden;
+}
+
+.styles_scrollable-div__prSCv {
+  max-height: 100%;
+}
