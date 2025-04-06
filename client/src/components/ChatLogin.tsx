@@ -9,7 +9,7 @@ const ChatLogin = ({ newUser, handleChange, logNewuser }: NewUserProps) => {
     <div className='card w-100 text-center border-white'>
       <div className='row'>
         <div className='col-12'>
-          <h5>Enter UserName</h5>
+          <h5>채팅방 입장</h5>
         </div>
         <div className='d-flex just-content-center flex-column py-1'>
           <input
@@ -17,13 +17,13 @@ const ChatLogin = ({ newUser, handleChange, logNewuser }: NewUserProps) => {
             name='newUser'
             value={newUser}
             className='form-control mb-3'
-            placeholder='username'
+            placeholder='닉네임을 입력해주세요'
             autoComplete='off'
             onChange={(e) => handleChange(e)}
             onKeyDown={(e) => (e.code === 'Enter' ? logNewuser() : null)}
           />
           <button className='btn btn-success' onClick={logNewuser}>
-            Join
+            로그인
           </button>
         </div>
       </div>

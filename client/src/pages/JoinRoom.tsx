@@ -11,12 +11,10 @@ const socket = io('http://localhost:4000', {
 interface User {
   username: string;
   userId: string;
+  color: string;
 }
 
-interface SessionData {
-  userId: string;
-  username: string;
-}
+interface SessionData extends User {}
 
 export const JoinRoom = () => {
   const [username, setUsername] = useState('');
@@ -24,70 +22,48 @@ export const JoinRoom = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const getColor = getRandomColor();
-
-  function getRandomColor() {
-    const colors = ['#e98888', '#8be78b', '#8989df', '#d4d488', '#85b5e8'];
-    const remainingColors = [...colors];
-
-    return function () {
-      if (remainingColors.length === 0) {
-        throw new Error('No more colors available');
-      }
-      const randomIndex = Math.floor(Math.random() * remainingColors.length);
-      const color = remainingColors[randomIndex];
-
-      remainingColors.splice(randomIndex, 1);
-
-      return color;
-    };
-  }
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setUsername(e.target.value);
   }
+
   useEffect(() => {
     socket.on('users', (users: User[]) => {
-      const messageArr: Message[] = [];
-      users.forEach((user) => {
-        const newMessage: Message = {
-          id: user.userId,
-          sender: 'system',
-          type: 'UserStatus',
-          userId: user.userId,
-          username: user.username,
-        };
-        messageArr.push(newMessage);
-      });
-
+      const messageArr: Message[] = users.map((user) => ({
+        id: user.userId,
+        sender: 'system',
+        type: 'UserStatus',
+        userId: user.userId,
+        username: user.username,
+        color: user.color,
+      }));
       setMessages((prev) => [...prev, ...messageArr]);
-      console.log(messageArr);
     });
 
-    socket.on('session', (data: SessionData) => {
-      const { username, userId } = data;
-      setUser({ username, userId });
+    socket.on('session', (data: User) => {
+      setUser(data);
     });
 
-    socket.on('user connected', ({ userId, username }) => {
+    socket.on('user connected', ({ userId, username, color }) => {
       const newMessage: Message = {
         id: '',
         sender: 'user',
         type: 'message',
-        userId: userId,
-        username: username,
+        userId,
+        username,
+        color,
       };
       setMessages((prev) => [...prev, newMessage]);
     });
 
-    socket.on('new message', ({ userId, username, message }) => {
+    socket.on('new message', ({ userId, username, message, color }) => {
       const newMessage: Message = {
         id: '',
         sender: 'user',
         type: 'message',
-        userId: userId,
-        username: username,
-        message: message,
+        userId,
+        username,
+        message,
+        color,
       };
       setMessages((prev) => [...prev, newMessage]);
     });
@@ -95,43 +71,46 @@ export const JoinRoom = () => {
     return () => {
       socket.off('session');
       socket.off('users');
+      socket.off('user connected');
+      socket.off('new message');
     };
   }, []);
 
   function logNewuser() {
     socket.auth = { username };
     socket.connect();
-    getRandomColor();
   }
 
   function sendMessage() {
+    if (!user) return;
+
     socket.emit('new message', message);
 
     const newMessage: Message = {
       id: '',
       sender: 'user',
       type: 'message',
-      userId: user?.userId,
-      username: user?.username,
-      message: message,
+      userId: user.userId,
+      username: user.username,
+      message,
+      color: user.color,
     };
     setMessages((prev) => [...prev, newMessage]);
     setMessage('');
   }
 
   return (
-    <div className='container '>
-      {user?.userId && (
+    <div className='container d-flex flex-column justify-content-center align-items-center'>
+      {user?.userId ? (
         <ChatRoom
           user={user}
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage}
           messages={messages}
-          color={getColor()}
+          color={user.color}
         />
-      )}
-      {!user?.userId && (
+      ) : (
         <ChatLogin
           newUser={username}
           handleChange={handleChange}

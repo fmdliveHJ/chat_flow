@@ -36,13 +36,13 @@ const ChatRoom = ({
       <ChatHeader user={user} color={color} />
       <div
         className='position-relative chat-high overflow-auto'
-        style={{ height: '500px' }}
+        style={{ height: 'calc(100% - 102px)' }}
       >
         <ScrollableFeed>
           {messages.map((message, index) => {
             return message.type === 'UserStatus' ? (
               <div key={index} className='text-center'>
-                <span className='badge bg-info'>
+                <span className='badge' style={{ backgroundColor: color }}>
                   {message.userId === user.userId
                     ? 'you have joined the chat'
                     : `${message.username} has joined the chat`}
@@ -58,7 +58,7 @@ const ChatRoom = ({
                 }
               >
                 <div className='d-flex flex-row'>
-                  <ChatColorIcon color={color} />
+                  <ChatColorIcon color={message.color} />
                   <div className='flex-fill'>
                     <div className='text-muted small'>{message.username}</div>
                     <div className='text-break'>{message.message}</div>

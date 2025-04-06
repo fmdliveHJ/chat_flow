@@ -10,8 +10,8 @@ interface ChatHeaderProps {
 
 const ChatHeader = ({ user, color }: ChatHeaderProps) => {
   return (
-    <div className='py-2 align-self-start sticky-top'>
-      <div className='d-flex align-items-center py-1'>
+    <div className='py-2 align-self-start sticky-top px-2'>
+      <div className='d-flex align-items-center py-1 gap-2'>
         <div className='position-relative'>
           <ChatColorIcon color={color} />
         </div>
