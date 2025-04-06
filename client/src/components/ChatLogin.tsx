@@ -4,7 +4,7 @@ interface NewUserProps {
   logNewuser: () => void;
 }
 
-const NewUser = ({ newUser, handleChange, logNewuser }: NewUserProps) => {
+const ChatLogin = ({ newUser, handleChange, logNewuser }: NewUserProps) => {
   return (
     <div className='card w-100 text-center border-white'>
       <div className='row'>
@@ -31,4 +31,4 @@ const NewUser = ({ newUser, handleChange, logNewuser }: NewUserProps) => {
   );
 };
 
-export default NewUser;
+export default ChatLogin;

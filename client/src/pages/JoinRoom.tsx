@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import NewUser from '../components/NewUser';
+import ChatLogin from '../components/ChatLogin';
 import ChatRoom from '../components/ChatRoom';
 import { io } from 'socket.io-client';
 import { Message } from '../types/message';
@@ -23,6 +23,25 @@ export const JoinRoom = () => {
   const [user, setUser] = useState<User | null>(null);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+
+  const getColor = getRandomColor();
+
+  function getRandomColor() {
+    const colors = ['#e98888', '#8be78b', '#8989df', '#d4d488', '#85b5e8'];
+    const remainingColors = [...colors];
+
+    return function () {
+      if (remainingColors.length === 0) {
+        throw new Error('No more colors available');
+      }
+      const randomIndex = Math.floor(Math.random() * remainingColors.length);
+      const color = remainingColors[randomIndex];
+
+      remainingColors.splice(randomIndex, 1);
+
+      return color;
+    };
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setUsername(e.target.value);
@@ -82,6 +101,7 @@ export const JoinRoom = () => {
   function logNewuser() {
     socket.auth = { username };
     socket.connect();
+    getRandomColor();
   }
 
   function sendMessage() {
@@ -108,10 +128,11 @@ export const JoinRoom = () => {
           setMessage={setMessage}
           sendMessage={sendMessage}
           messages={messages}
+          color={getColor()}
         />
       )}
       {!user?.userId && (
-        <NewUser
+        <ChatLogin
           newUser={username}
           handleChange={handleChange}
           logNewuser={logNewuser}

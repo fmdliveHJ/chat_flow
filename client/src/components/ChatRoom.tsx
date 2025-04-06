@@ -4,7 +4,7 @@ import ChatInput from './ChatInput';
 import ChatContainer from './ChatContainer';
 import { Message } from '../types/message';
 import ScrollableFeed from 'react-scrollable-feed';
-
+import ChatColorIcon from './ChatColorIcon';
 interface ChatRoomProps {
   user: {
     username: string;
@@ -14,6 +14,7 @@ interface ChatRoomProps {
   messages: Message[];
   sendMessage: (message: string) => void;
   setMessage: (message: string) => void;
+  color: string;
 }
 
 const ChatRoom = ({
@@ -22,6 +23,7 @@ const ChatRoom = ({
   messages,
   sendMessage,
   setMessage,
+  color,
 }: ChatRoomProps) => {
   useEffect(() => {
     console.log(user);
@@ -31,7 +33,7 @@ const ChatRoom = ({
 
   return (
     <ChatContainer>
-      <ChatHeader user={user} />
+      <ChatHeader user={user} color={color} />
       <div
         className='position-relative chat-high overflow-auto'
         style={{ height: '500px' }}
@@ -56,13 +58,7 @@ const ChatRoom = ({
                 }
               >
                 <div className='d-flex flex-row'>
-                  <img
-                    src='https://bootdey.com/img/Content/avatar/avatar1.png'
-                    alt=''
-                    className='rounded-circle'
-                    width='40'
-                    height='40'
-                  />
+                  <ChatColorIcon color={color} />
                   <div className='flex-fill'>
                     <div className='text-muted small'>{message.username}</div>
                     <div className='text-break'>{message.message}</div>
